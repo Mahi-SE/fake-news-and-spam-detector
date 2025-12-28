@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fake News & Scam Detector</title>
+
+<style>
+
+body{
+  font-family: Arial;
+  background:#F5F7FA;
+  text-align:center;
+}
+
+.container{
+  width:60%;
+  margin:auto;
+  margin-top:30px;
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0px 0px 20px rgba(0,0,0,0.2);
+}
+
+h1{
+  color:#2F80ED;
+}
+
+.card{
+  background:#EEF5FF;
+  margin-top:20px;
+  padding:20px;
+  border-radius:10px;
+}
+
+textarea,input{
+  width:80%;
+  padding:10px;
+  margin-top:10px;
+  border-radius:8px;
+  border:1px solid gray;
+  outline:none;
+}
+
+button{
+  margin-top:10px;
+  padding:10px 20px;
+  border:none;
+  background:#2F80ED;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:15px;
+}
+
+button:hover{
+  background:#1c5fc2;
+}
+
+.result{
+  margin-top:15px;
+  font-weight:bold;
+  font-size:18px;
+}
+
+.footer{
+  margin-top:30px;
+  color:gray;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🛡️ Fake News & Scam Detector</h1>
+<p>Check whether a message is Fake or Real — and verify if a link is Safe or Scam 🚨</p>
+
+<div class="card">
+<h2>📰 Check News / Message</h2>
+
+<textarea id="text" rows="6" placeholder="Paste any news or WhatsApp message here..."></textarea><br>
+<button onclick="checkText()">Check News</button>
+
+<p id="textResult" class="result"></p>
+</div>
+
+
+<div class="card">
+<h2>🔗 Check Website / Link</h2>
+
+<input id="url" placeholder="Enter any website or link...">
+<br>
+<button onclick="checkLink()">Check Link</button>
+
+<p id="linkResult" class="result"></p>
+</div>
+
+<p class="footer">Powered by Google Gemini AI & Google Safe Browsing</p>
+
+</div>
+
+
+<script>
+
+async function checkText() {
+ document.getElementById("textResult").innerText="⏳ Checking...";
+ let text = document.getElementById("text").value;
+ let res = await fetch("http://fake-news-scam-detector.onrender.com/check-text", {
+   method:"POST",
+   headers:{ "Content-Type":"application/json" },
+   body:JSON.stringify({ text })
+ });
+ let data = await res.json();
+ document.getElementById("textResult").innerText = data.result ?? "Something went wrong";
+}
+
+async function checkLink() {
+ document.getElementById("linkResult").innerText="⏳ Checking...";
+ let url = document.getElementById("url").value;
+ let res = await fetch("https://fake-news-scam-detector.onrender.com/check-link", {
+   method:"POST",
+   headers:{ "Content-Type":"application/json" },
+   body:JSON.stringify({ url })
+ });
+ let data = await res.json();
+ document.getElementById("linkResult").innerText = data.result ?? "Something went wrong";
+}
+
+</script>
+
+</body>
+</html>
